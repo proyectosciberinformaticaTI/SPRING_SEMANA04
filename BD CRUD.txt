@@ -1,0 +1,65 @@
+SECUENCIAS
+
+CREATE SEQUENCE public.persona_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 12
+CACHE 1;
+
+CREATE SEQUENCE public.telefono_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+
+TABLAS
+CREATE TABLE public.persona
+(
+id integer NOT NULL DEFAULT nextval('persona_id_seq'::regclass),
+apellidos character varying,
+nombres character varying,
+CONSTRAINT persona_pkey PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
+
+CREATE TABLE public.telefono
+(
+id integer NOT NULL DEFAULT nextval('telefono_id_seq'::regclass),
+numero character varying(9),
+persona_id integer,
+CONSTRAINT telefono_pkey PRIMARY KEY (id),
+CONSTRAINT telefono_persona_id_fkey FOREIGN KEY (persona_id)
+REFERENCES public.persona (id) MATCH SIMPLE
+ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+OIDS=FALSE
+);
+
+CREATE TABLE public.usuario
+(
+id integer NOT NULL,
+nombre character varying,
+clave character varying,
+tipo character varying,
+estado "char",
+CONSTRAINT usuario_pkey PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
+
+DATA
+
+insert into usuario(id, nombre, clave, tipo, estado)
+values(1,'JMEDINA','123','ROLE_ADMIN','1');
+insert into usuario(id, nombre, clave, tipo, estado)
+values(2,'MITO','123','ROLE_USER','1');
+insert into usuario(id, nombre, clave, tipo, estado)
+values(3,'JMEDINA','123','ROLE_USER','1');
+insert into usuario(id, nombre, clave, tipo, estado)
+values(4,'CODE','123','ROLE_XYZ','1');
